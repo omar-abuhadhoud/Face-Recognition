@@ -27,16 +27,18 @@ def load_image(image_path, max_side=MAX_IMAGE_SIDE):
 
 
 def load_person_images(person_name, max_side=MAX_IMAGE_SIDE):
-    """Load every image in PEOPLE_DIR/person_name. Returns a list of ("personName_fileName", image)."""
+    """Load every image in PEOPLE_DIR/person_name. Returns a list of (image_path, image),
+    where image_path is relative to the program root, e.g. "images/omar/photo.jpg"."""
     person_dir = os.path.join(PEOPLE_DIR, person_name)
 
     labeled_images = []
     for file_name in sorted(os.listdir(person_dir)):
         if os.path.splitext(file_name)[1].lower() not in IMAGE_EXTENSIONS:
             continue
-        image = load_image(os.path.join(person_dir, file_name), max_side)
+        image_path = f"{PEOPLE_DIR}/{person_name}/{file_name}"
+        image = load_image(image_path, max_side)
         if image is not None:
-            labeled_images.append((f"{person_name}_{file_name}", image))
+            labeled_images.append((image_path, image))
 
     print(f"Loaded {len(labeled_images)} images from {person_dir}")
     return labeled_images

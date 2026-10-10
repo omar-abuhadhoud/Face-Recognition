@@ -1,0 +1,13 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg17   # PostgreSQL with the pgvector extension (vector column type)
+    container_name: postgres
+    environment:
+      POSTGRES_USER: face
+      POSTGRES_PASSWORD: face
+      POSTGRES_DB: face_recognition
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data   # persists the database in the project's pgdata/ folder
+    restart: unless-stopped

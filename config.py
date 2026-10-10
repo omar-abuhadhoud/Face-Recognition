@@ -11,11 +11,19 @@ DETECTION_THRESHOLD = 0.5     # minimum face detection confidence
 DETECTION_SIZE = (640, 640)   # detection input size; larger finds smaller faces
 EMBEDDING_SIZE = 512
 
-# How to combine one person's face embeddings: "mean" or "median"
-PERSON_EMBEDDING_METHOD = "mean"
+# PostgreSQL + pgvector (started with docker compose)
+POSTGRES_HOST = "localhost"
+POSTGRES_PORT = 5432
+POSTGRES_USER = "face"
+POSTGRES_PASSWORD = "face"
+POSTGRES_DB = "face_recognition"
+DATABASE_URL = f"postgresql+psycopg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+MATCH_RESULTS = 3   # how many closest people to return per test face
+MATCH_FACES = 20    # how many nearest stored faces to fetch before scoring people
+MATCH_SCORE_METHOD = "max"   # how to combine a person's nearest faces into one score: "max" or "mean"
+MATCH_THRESHOLD = 0.4   # minimum cosine similarity to accept a match; below it the face is "Unknown"
 
-TEST_IMAGE_PATHS = [
-    "test/image.png",
-    "test/photo_1_2026-10-06_23-43-14.jpg",
-    "test/photo_2_2026-10-06_23-43-14.jpg",
-]
+# API server (started with start_server.py)
+API_HOST = "0.0.0.0"
+API_PORT = 8000
+ENROLL_ON_STARTUP = True   # embed PEOPLE_DIR into the database when the server starts
